@@ -57,7 +57,8 @@ $zip = Join-Path $root "dist\$name.zip"
 if (Test-Path $zip) { Remove-Item $zip }
 Compress-Archive -Path (Join-Path $stage '*') -DestinationPath $zip
 $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLower()
-"$hash  $name.zip" | Out-File -Encoding ascii "$zip.sha256"
+# sha256sum -c 로 바로 검증할 수 있게 LF 줄바꿈 + BOM 없이
+[IO.File]::WriteAllText("$zip.sha256", "$hash  $name.zip`n", [Text.UTF8Encoding]::new($false))
 
 Write-Host ""
 Write-Host "완료: $zip"
