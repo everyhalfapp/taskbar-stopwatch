@@ -65,7 +65,7 @@ $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLower()
 # 바로 받기 링크용: 버전 없는 고정 이름의 exe
 #   https://github.com/<owner>/<repo>/releases/latest/download/TaskbarStopwatch.exe
 $exe = Join-Path $root 'dist\TaskbarStopwatch.exe'
-Copy-Item targetelease\TaskbarStopwatch.exe $exe -Force
+Copy-Item target\release\TaskbarStopwatch.exe $exe -Force
 $exeHash = (Get-FileHash $exe -Algorithm SHA256).Hash.ToLower()
 [IO.File]::WriteAllText("$exe.sha256", "$exeHash  TaskbarStopwatch.exe`n", [Text.UTF8Encoding]::new($false))
 
