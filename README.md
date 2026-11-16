@@ -6,18 +6,20 @@
 
 <p align="center">
   Windows 작업표시줄 위에 작게 붙여 두고 <b>실제 작업 시간</b>을 재는 스톱워치 위젯<br>
-  <sub>A tiny stopwatch widget that lives on the Windows taskbar — single 400 KB exe, ~5 MB RAM.</sub>
+  <sub>A tiny stopwatch widget that lives on the Windows taskbar — single ~0.5 MB exe, ~5 MB RAM.</sub>
 </p>
 
 <p align="center">
-  <a href="https://github.com/everyhalfapp/taskbar-stopwatch/releases/latest">⬇ 최신 버전 다운로드</a>
+  <a href="https://github.com/everyhalfapp/taskbar-stopwatch/releases/latest/download/TaskbarStopwatch.exe"><b>⬇ 다운로드 (TaskbarStopwatch.exe)</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://everyhalfapp.github.io/taskbar-stopwatch/">소개 페이지</a>
 </p>
 
 ---
 
 ## 특징
 
-- **가볍습니다** — 실행 파일 하나(약 400KB), 메모리 약 5MB. 웹 엔진 없이 Win32 + Direct2D 로 직접 그립니다.
+- **가볍습니다** — 실행 파일 하나(약 0.5MB), 메모리 약 5MB. 웹 엔진 없이 Win32 + Direct2D 로 직접 그립니다.
 - **작업표시줄에 딱 붙는 위젯** — 끌어다 놓으면 작업표시줄 높이에 맞춰 자동 정렬, 항상 위에 표시.
 - **테마 3종** — 아날로그 · 디지털(모던) · 디지털(LCD), 다크/라이트, 포인트 색, 배경 불투명도.
 - **시간 직접 수정** — 깜빡하고 늦게 눌렀어도 `+15`, `1:30:00` 처럼 입력해서 바로잡기.
@@ -41,8 +43,9 @@
 
 ## 설치
 
-1. [Releases](https://github.com/everyhalfapp/taskbar-stopwatch/releases/latest) 에서 `TaskbarStopwatch-vX.Y.Z-windows-x64.zip` 을 받습니다.
-2. 압축을 풀고 `TaskbarStopwatch.exe` 를 원하는 폴더에 두고 실행합니다. 설치 과정은 없습니다.
+1. **[TaskbarStopwatch.exe 다운로드](https://github.com/everyhalfapp/taskbar-stopwatch/releases/latest/download/TaskbarStopwatch.exe)** — 항상 최신 버전이 받아집니다.
+   (zip 이 필요하면 [Releases](https://github.com/everyhalfapp/taskbar-stopwatch/releases/latest) 에서 `TaskbarStopwatch-vX.Y.Z-windows-x64.zip`)
+2. `TaskbarStopwatch.exe` 를 원하는 폴더에 두고 실행합니다. 설치 과정은 없습니다.
 3. 처음 실행하면 작업표시줄 오른쪽(알림 영역 왼편)에 나타납니다.
 
 > **"Windows의 PC 보호" 창이 뜨는 경우**
@@ -109,7 +112,7 @@ Rust 버전은 `rust-toolchain.toml` 로 고정되어 있어 자동으로 맞춰
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\package.ps1
-# → dist\TaskbarStopwatch-v1.0.0-windows-x64.zip
+# → dist\TaskbarStopwatch-v1.0.1-windows-x64.zip, dist\TaskbarStopwatch.exe (+ 각 .sha256)
 ```
 
 ### 개발용 옵션

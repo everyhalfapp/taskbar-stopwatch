@@ -173,7 +173,7 @@ dependencies = [
 
 [[package]]
 name = "taskbar-stopwatch"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "embed-resource",
  "windows",

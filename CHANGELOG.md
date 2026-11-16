@@ -1,5 +1,10 @@
 # 변경 기록
 
+## [1.0.1] - 2026-11-16
+
+- 릴리스에 `TaskbarStopwatch.exe` 를 고정 이름으로 함께 첨부 — `releases/latest/download/TaskbarStopwatch.exe` 로 항상 최신 버전을 바로 받을 수 있음
+- 소개 페이지 추가 (GitHub Pages, `docs/index.html`)
+
 ## [1.0.0] - 2026-11-16
 
 첫 공개 버전.

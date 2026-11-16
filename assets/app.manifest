@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-  <assemblyIdentity type="win32" name="TaskbarStopwatch" version="1.0.0.0" processorArchitecture="*"/>
+  <assemblyIdentity type="win32" name="TaskbarStopwatch" version="1.0.1.0" processorArchitecture="*"/>
   <description>Taskbar Stopwatch</description>
   <!-- 최신 공용 컨트롤(메시지 상자·색 선택 창이 현대적인 모양으로) -->
   <dependency>

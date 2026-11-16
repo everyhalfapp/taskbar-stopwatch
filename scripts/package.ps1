@@ -62,6 +62,15 @@ $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLower()
 # sha256sum -c 로 바로 검증할 수 있게 LF 줄바꿈 + BOM 없이
 [IO.File]::WriteAllText("$zip.sha256", "$hash  $name.zip`n", [Text.UTF8Encoding]::new($false))
 
+# 바로 받기 링크용: 버전 없는 고정 이름의 exe
+#   https://github.com/<owner>/<repo>/releases/latest/download/TaskbarStopwatch.exe
+$exe = Join-Path $root 'dist\TaskbarStopwatch.exe'
+Copy-Item targetelease\TaskbarStopwatch.exe $exe -Force
+$exeHash = (Get-FileHash $exe -Algorithm SHA256).Hash.ToLower()
+[IO.File]::WriteAllText("$exe.sha256", "$exeHash  TaskbarStopwatch.exe`n", [Text.UTF8Encoding]::new($false))
+
 Write-Host ""
 Write-Host "완료: $zip"
-Write-Host "SHA256: $hash"
+Write-Host "      $exe"
+Write-Host "SHA256 (zip): $hash"
+Write-Host "SHA256 (exe): $exeHash"

@@ -1,6 +1,6 @@
 [package]
 name = "taskbar-stopwatch"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2021"
 description = "A tiny stopwatch widget that sits on the Windows taskbar to track your real working time."
 license = "MIT"

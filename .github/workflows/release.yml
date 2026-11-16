@@ -1,6 +1,7 @@
 name: Release
 
-# v1.0.0 같은 태그를 올리면 빌드해서 GitHub Releases 에 초안(draft)으로 zip 을 첨부한다.
+# v1.0.0 같은 태그를 올리면 빌드해서 GitHub Releases 에 초안(draft)으로 zip 과 exe 를 첨부한다.
+# exe 는 고정 이름이라 releases/latest/download/TaskbarStopwatch.exe 가 항상 최신 버전을 가리킨다.
 on:
   push:
     tags: ['v*']
@@ -27,3 +28,5 @@ jobs:
           files: |
             dist/*.zip
             dist/*.zip.sha256
+            dist/TaskbarStopwatch.exe
+            dist/TaskbarStopwatch.exe.sha256
