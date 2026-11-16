@@ -123,7 +123,7 @@ pub fn parse(input: &str) -> Option<Parsed> {
         }
         total
     };
-    if !ms.is_finite() {
+    if !ms.is_finite() || ms > crate::model::MAX_MS as f64 {
         return None;
     }
     let ms = ms.round() as i64;
@@ -157,6 +157,8 @@ mod tests {
         assert_eq!(parse("+"), None);
         assert_eq!(parse("1:2:3:4"), None);
         assert_eq!(parse("5x"), None);
+        assert_eq!(parse("99999999999999h"), None);
+        assert_eq!(parse("1e400"), None);
     }
 
     #[test]

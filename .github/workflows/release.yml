@@ -1,25 +1,27 @@
 name: Release
 
-# v1.0.0 같은 태그를 올리면 빌드해서 GitHub Releases 에 zip 을 첨부한다.
+# v1.0.0 같은 태그를 올리면 빌드해서 GitHub Releases 에 초안(draft)으로 zip 을 첨부한다.
 on:
   push:
     tags: ['v*']
 
 permissions:
-  contents: write
+  contents: write   # 릴리스 생성에만 필요
 
 jobs:
   release:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
       - name: Rust 툴체인 (rust-toolchain.toml)
         run: rustup show
       - name: 패키징
         shell: pwsh
         run: ./scripts/package.ps1
-      - name: GitHub Release 만들기
-        uses: softprops/action-gh-release@v2
+      - name: GitHub Release 만들기 (초안)
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
           draft: true
           files: |

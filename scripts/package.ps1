@@ -11,7 +11,9 @@ Write-Host "Taskbar Stopwatch v$version"
 
 # 빌드한 PC 의 사용자 폴더·프로젝트 경로가 exe 안에 남지 않도록 경로를 바꿔서 컴파일
 $sep = [char]0x1f
-$flags = @("--remap-path-prefix=$env:USERPROFILE=~", "--remap-path-prefix=$root=.")
+# (CARGO_ENCODED_RUSTFLAGS 는 .cargo/config.toml 의 rustflags 를 덮어쓰므로 그 플래그도 함께 넣음)
+$flags = @("-Ctarget-feature=+crt-static", "-Ccontrol-flow-guard",
+           "--remap-path-prefix=$env:USERPROFILE=~", "--remap-path-prefix=$root=.")
 if ($env:CARGO_HOME) { $flags += "--remap-path-prefix=$env:CARGO_HOME=~/.cargo" }
 $env:CARGO_ENCODED_RUSTFLAGS = $flags -join $sep
 

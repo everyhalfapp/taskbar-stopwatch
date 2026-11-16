@@ -62,8 +62,13 @@ impl Default for Settings {
 }
 
 pub fn clamp_size(w: f32, h: f32) -> (f32, f32) {
+    let w = if w.is_finite() { w } else { DEFAULT_W };
+    let h = if h.is_finite() { h } else { DEFAULT_H };
     (w.round().clamp(MIN_W, MAX_W), h.round().clamp(MIN_H, MAX_H))
 }
+
+/// 측정 시간 상한: 9999시간 (값이 비정상적으로 커져 넘치는 일 방지)
+pub const MAX_MS: i64 = 9_999 * 3_600_000;
 
 // ───────────── 파일 경로 ─────────────
 fn data_dir() -> PathBuf {
@@ -95,7 +100,8 @@ fn hex_color(s: &str) -> Option<u32> {
 impl Settings {
     fn apply_map(&mut self, m: &HashMap<String, String>) {
         let b = |k: &str| m.get(k).map(|v| v == "true" || v == "1");
-        let f = |k: &str| m.get(k).and_then(|v| v.parse::<f32>().ok());
+        // NaN·무한대 같은 값은 무시
+        let f = |k: &str| m.get(k).and_then(|v| v.parse::<f32>().ok()).filter(|v| v.is_finite());
         if let Some(v) = m.get("theme") {
             self.theme = match v.as_str() { "analog" => Theme::Analog, "lcd" => Theme::Lcd, _ => Theme::Digital };
         }
@@ -107,8 +113,10 @@ impl Settings {
         let (w, h) = clamp_size(self.width, self.height);
         self.width = w;
         self.height = h;
-        self.x = m.get("x").and_then(|v| v.parse().ok());
-        self.y = m.get("y").and_then(|v| v.parse().ok());
+        // 화면 좌표로 말이 되는 범위만
+        let pos = |k: &str| m.get(k).and_then(|v| v.parse::<i32>().ok()).filter(|v| v.abs() < 100_000);
+        self.x = pos("x");
+        self.y = pos("y");
         if let Some(v) = m.get("controls") {
             self.controls = match v.as_str() { "hover" => Controls::Hover, "never" => Controls::Never, _ => Controls::Always };
         }
@@ -150,7 +158,8 @@ pub struct Timer {
 
 impl Timer {
     pub fn elapsed(&self) -> i64 {
-        self.acc + self.started_at.map(|t| now_ms() - t).unwrap_or(0)
+        let run = self.started_at.map(|t| (now_ms() - t).max(0)).unwrap_or(0);
+        self.acc.saturating_add(run).clamp(0, MAX_MS)
     }
     pub fn running(&self) -> bool { self.started_at.is_some() }
     pub fn start(&mut self) {
@@ -167,16 +176,18 @@ impl Timer {
     }
     pub fn reset(&mut self) { *self = Timer::default(); }
     pub fn set(&mut self, ms: i64) {
-        self.acc = ms.max(0);
+        self.acc = ms.clamp(0, MAX_MS);
         if self.started_at.is_some() { self.started_at = Some(now_ms()); }
     }
-    pub fn adjust(&mut self, delta: i64) { self.set(self.elapsed() + delta); }
+    pub fn adjust(&mut self, delta: i64) { self.set(self.elapsed().saturating_add(delta)); }
 
     pub fn load() -> Timer {
         let Some(m) = read_kv(&timer_path()) else { return Timer::default() };
-        let acc = m.get("acc").and_then(|v| v.parse::<f64>().ok()).unwrap_or(0.0) as i64;
-        let started_at = m.get("startedAt").and_then(|v| v.parse::<f64>().ok()).map(|v| v as i64);
-        Timer { acc: acc.max(0), started_at }
+        let num = |k: &str| m.get(k).and_then(|v| v.parse::<f64>().ok()).filter(|v| v.is_finite()).map(|v| v as i64);
+        let acc = num("acc").unwrap_or(0).clamp(0, MAX_MS);
+        // 미래 시각이면 지금으로 맞춤
+        let started_at = num("startedAt").filter(|v| *v > 0).map(|v| v.min(now_ms()));
+        Timer { acc, started_at }
     }
 
     pub fn save(&self) {

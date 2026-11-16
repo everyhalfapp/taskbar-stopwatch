@@ -1,0 +1,11 @@
+# 액션과 Rust 의존성의 보안 업데이트를 자동으로 제안
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: monthly

@@ -1,0 +1,5 @@
+# 배포 exe 가 Visual C++ 런타임(vcruntime140.dll) 없이도 실행되도록 CRT 를 정적으로 링크하고,
+# Control Flow Guard 를 켠다.
+# (scripts/package.ps1 은 CARGO_ENCODED_RUSTFLAGS 를 쓰므로 같은 플래그를 거기에도 넣어 둠)
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static", "-C", "control-flow-guard"]
